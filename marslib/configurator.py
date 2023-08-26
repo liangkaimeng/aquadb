@@ -108,7 +108,7 @@ def get_config(usr='scott', encoding='utf-8'):
     >>> user, password, host, port, sid = get_config(usr='my_user')
     >>> print(user, password, host, port, sid)
     """
-    filename = os.path.join(os.path.dirname(dreamlake.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         with open(filename, 'w') as file:
@@ -175,7 +175,7 @@ def add_config(user, password, host, port, sid, encoding='utf-8'):
     >>> sid = "ORCL"
     >>> add_config(user, password, host, port, sid)
     """
-    filename = os.path.join(os.path.dirname(dreamlake.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         with open(filename, 'w') as file:
@@ -200,7 +200,7 @@ def add_config(user, password, host, port, sid, encoding='utf-8'):
 
 
 def set_config(session, option, value, encoding='utf-8'):
-    filename = os.path.join(os.path.dirname(dreamlake.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         config = configparser.ConfigParser()
