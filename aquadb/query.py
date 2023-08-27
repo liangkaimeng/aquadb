@@ -6,8 +6,8 @@ import time
 import warnings
 import cx_Oracle
 import pandas as pd
-from marslib import connection
-from marslib import parser
+from aquadb import connection
+from aquadb import parser
 from prettytable import PrettyTable
 
 warnings.filterwarnings("ignore")
@@ -114,8 +114,13 @@ def read_table(usr, file=None, query=None, index=-1, **kwargs):
     try:
         connect = connection.get_connection_from_pool(usr)
 
-        if not query:
-            query = parser.textfile_search_parse(file, index)
+        if query is None:
+            if not file is None:
+                query = parser.textfile_search_parse(file, index)
+            else:
+                raise ValueError('数据类型错误。')
+        else:
+            query = parser.search_statement_parse(query, index)
 
         try:
             table = pd.read_sql(query, con=connect, **kwargs)
@@ -185,8 +190,13 @@ def fetch_all(usr, file=None, query=None, index=-1, format_table=True, head=5):
         connect = connection.get_connection_from_pool(usr)
         cursor = connect.cursor()
 
-        if not query:
-            query = parser.textfile_search_parse(file, index)
+        if query is None:
+            if not file is None:
+                query = parser.textfile_search_parse(file, index)
+            else:
+                raise ValueError('数据类型错误。')
+        else:
+            query = parser.search_statement_parse(query, index)
 
         cursor.execute(query)
         field_names = [desc[0] for desc in cursor.description]
@@ -264,8 +274,13 @@ def fetch_one(usr, file=None, query=None, index=-1, format_table=True):
         connect = connection.get_connection_from_pool(usr)
         cursor = connect.cursor()
 
-        if not query:
-            query = parser.textfile_search_parse(file, index)
+        if query is None:
+            if not file is None:
+                query = parser.textfile_search_parse(file, index)
+            else:
+                raise ValueError('数据类型错误。')
+        else:
+            query = parser.search_statement_parse(query, index)
 
         cursor.execute(query)
         field_names = [desc[0] for desc in cursor.description]

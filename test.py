@@ -6,9 +6,9 @@
 # print("\033[92m{}\033[0m".format("This is green text"))  # 绿色
 # print("\033[94m{}\033[0m".format("This is blue text"))  # 蓝色
 
-from marslib.query import fetch_all, fetch_one, read_table
-from marslib.executor import to_execute, to_proceduce
-from marslib.parser import textfile_search_parse, textfile_procedure_parser
+from aquadb.query import fetch_all, fetch_one, read_table
+from aquadb.executor import to_execute, to_proceduce
+from aquadb.parser import textfile_search_parse, textfile_procedure_parser
 
 user = 'scott'
 # file = '456.sql'

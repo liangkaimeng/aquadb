@@ -5,7 +5,7 @@
 import os
 import base64
 import warnings
-import marslib
+import aquadb
 import configparser
 
 warnings.filterwarnings('ignore')
@@ -100,7 +100,7 @@ def get_config(usr='scott', encoding='utf-8'):
     Notes
     -----
     1. 本函数从配置文件中读取用户的数据库连接配置信息，解密敏感信息，并返回一个元组。
-    2. 配置文件默认命名为 'ocl.ini'，存放在与 `marslib` 模块相同的目录中。
+    2. 配置文件默认命名为 'ocl.ini'，存放在与 `aquadb` 模块相同的目录中。
     3. 如果配置文件不存在，将创建一个空的配置文件。
 
     Examples
@@ -108,7 +108,7 @@ def get_config(usr='scott', encoding='utf-8'):
     >>> user, password, host, port, sid = get_config(usr='my_user')
     >>> print(user, password, host, port, sid)
     """
-    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(aquadb.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         with open(filename, 'w') as file:
@@ -163,7 +163,7 @@ def add_config(user, password, host, port, sid, encoding='utf-8'):
     Notes
     -----
     1. 本函数将指定的数据库连接配置信息加密后添加到配置文件中。
-    2. 配置文件默认命名为 'ocl.ini'，存放在与 `marslib` 模块相同的目录中。
+    2. 配置文件默认命名为 'ocl.ini'，存放在与 `aquadb` 模块相同的目录中。
     3. 如果配置文件不存在，将创建一个空的配置文件。
 
     Examples
@@ -175,7 +175,7 @@ def add_config(user, password, host, port, sid, encoding='utf-8'):
     >>> sid = "ORCL"
     >>> add_config(user, password, host, port, sid)
     """
-    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(aquadb.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         with open(filename, 'w') as file:
@@ -200,7 +200,7 @@ def add_config(user, password, host, port, sid, encoding='utf-8'):
 
 
 def set_config(session, option, value, encoding='utf-8'):
-    filename = os.path.join(os.path.dirname(marslib.__file__), 'ocl.ini')
+    filename = os.path.join(os.path.dirname(aquadb.__file__), 'ocl.ini')
 
     if not os.path.exists(filename):
         config = configparser.ConfigParser()

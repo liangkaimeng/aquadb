@@ -1,4 +1,4 @@
--- drop table USER_LOAD_BREAK_TEST1;
+drop table USER_LOAD_BREAK_TEST1;
 
 create table USER_LOAD_BREAK_TEST1 AS
 SELECT

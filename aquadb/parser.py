@@ -6,6 +6,55 @@ import os
 import re
 
 
+def search_statement_parse(query, index=-1):
+    """
+    从给定的文本中提取 SQL 语句并返回。
+
+    Parameters:
+        query (str): 包含 SQL 语句的字符串。
+        index (int, optional): 要获取的 SQL 语句在列表中的索引。支持负数索引。默认为 -1。
+
+    Returns:
+        str or list: 如果提供了 index，则返回索引处的 SQL 语句；否则，返回包含所有提取的 SQL 语句的列表。
+
+    Raises:
+        ValueError: 如果没有识别到相关的 SQL 语句。
+        IndexError: 如果指定的索引超出范围。
+
+    Examples:
+        >>> query_text = "SELECT * FROM users; -- Get user data\nINSERT INTO logs VALUES ('login'); /* Log activity */"
+        >>> search_statement_parse(query_text)
+        ['SELECT * FROM users', "INSERT INTO logs VALUES ('login')"]
+
+        >>> query_text = "SELECT * FROM orders; INSERT INTO logs VALUES ('order placed');"
+        >>> search_statement_parse(query_text, index=0)
+        'SELECT * FROM orders'
+    """
+    # 移除 /* */注释内容
+    text_without_comments = re.sub(r'/\*.*?\*/', '', query, flags=re.DOTALL)
+    # 去除每行开头的 -- 注释
+    text_lines = text_without_comments.split('\n')
+    text_without_comments = '\n'.join(line for line in text_lines if not line.strip().startswith('--'))
+
+    # 使用正则表达式匹配 SQL 语句
+    sql_statements = re.split(r';\s*(?!--)', text_without_comments)
+    # 去掉分号和空元素
+    sql_statements = [sql.replace(";", "").strip() for sql in sql_statements if sql.strip()]
+
+    if not sql_statements:
+        raise ValueError("没有识别到相关的SQL语句，请检查输入是否有误")
+
+    if index is not None:
+        if index < 0:
+            index += len(sql_statements)  # 支持负数索引，从后往前计数
+        if 0 <= index < len(sql_statements):
+            return sql_statements[index]
+        else:
+            raise IndexError("索引超出范围")
+    else:
+        return sql_statements
+
+
 def textfile_search_parse(file_path, index=-1):
     """
     解析文本文件中的SQL语句。

@@ -5,8 +5,8 @@
 import time
 import warnings
 import cx_Oracle
-from marslib import connection
-from marslib import parser
+from aquadb import connection
+from aquadb import parser
 
 warnings.filterwarnings('ignore')
 
@@ -69,9 +69,13 @@ def to_execute(usr, file=None, query=None, index=None, commit=False, series=Fals
         connect = connection.get_connection_from_pool(usr)
         cursor = connect.cursor()
 
-        if not query:
-            query = parser.textfile_search_parse(file, index)
-            print(query)
+        if query is None:
+            if not file is None:
+                query = parser.textfile_search_parse(file, index)
+            else:
+                raise ValueError('数据类型错误。')
+        else:
+            query = parser.search_statement_parse(query, index)
 
         try:
             if series:  # 跑多个语句
@@ -80,7 +84,6 @@ def to_execute(usr, file=None, query=None, index=None, commit=False, series=Fals
 
                 error_count = 0
                 for item in query:
-                    print(item)
                     try:
                         cursor.execute(item)
                     except Exception as error:
@@ -168,8 +171,11 @@ def to_proceduce(usr, file=None, query=None, index=None, series=False, tolerant=
         connect = connection.get_connection_from_pool(usr)
         cursor = connect.cursor()
 
-        if not query:
-            query = parser.textfile_procedure_parser(file, index)
+        if query is None:
+            if not file is None:
+                query = parser.textfile_procedure_parser(file, index)
+            else:
+                raise ValueError('数据类型错误。')
 
         try:
             if series:  # 跑多个语句

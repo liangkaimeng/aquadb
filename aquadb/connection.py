@@ -3,7 +3,7 @@
 # date: 2023/8/25 0:46
 
 import cx_Oracle
-from marslib import configurator
+from aquadb import configurator
 
 
 def get_connection_from_pool(usr):

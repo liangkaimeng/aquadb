@@ -6,12 +6,13 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='marslib',
+    name='aquadb',
     version='1.1.1',
     author='梁开孟',
     author_email='519281809@qq.com',
     packages=find_packages(),
     include_package_data=True,
+    package_data={'': ['*.ini']},
     python_requires='>=3.9',
     install_requires=[
         'cx_Oracle>=8.3.0',
